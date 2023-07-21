@@ -1,0 +1,30 @@
+kind: Deployment
+metadata:
+  name: ignored-by-kustomize
+spec:
+  template:
+    spec:
+      containers:
+      - name: cloud-sql-proxy
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/tokens/gcp-ksa/google-application-credentials.json
+        volumeMounts:
+        - name: gcp-ksa
+          mountPath: /var/run/secrets/tokens/gcp-ksa
+          readOnly: true
+      volumes:
+        - name: gcp-ksa
+          projected:
+            defaultMode: 420
+            sources:
+            - serviceAccountToken:
+                path: token
+                audience: rueth-dev-abm-ref-arch.svc.id.goog
+                expirationSeconds: 172800
+            - configMap:
+                name: backend-adc
+                optional: false
+                items:
+                  - key: "config"
+                    path: "google-application-credentials.json"

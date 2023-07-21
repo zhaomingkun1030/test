@@ -17,7 +17,7 @@
   metadata:
     name: ledger-db-config
     labels:
-      app: postgres
+      app: ledger-db
   data:
     POSTGRES_DB: postgresdb
     POSTGRES_USER: admin

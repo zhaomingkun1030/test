@@ -1,0 +1,22 @@
+kind: Job
+metadata:
+  name: ignored-by-kustomize
+spec:
+  template:
+    spec:
+      containers:
+      - name: cloud-sql-proxy
+        args:
+        - "--port=5432"
+        - "--quitquitquit"
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: "100Mi"
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.6.0-alpine@sha256:89af2cffb14375be86c57480d81781351e4c2813450923fa9f00b089b9bb7e60
+        env:
+        - name: CSQL_PROXY_INSTANCE_CONNECTION_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: cloud-sql-admin
+              key: connectionName
