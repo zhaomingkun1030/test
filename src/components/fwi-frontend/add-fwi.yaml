@@ -1,0 +1,28 @@
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value: 
+    name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/run/secrets/tokens/gcp-ksa/google-application-credentials.json
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts/-
+  value:
+    name: gcp-ksa
+    mountPath: /var/run/secrets/tokens/gcp-ksa
+    readOnly: true
+- op: add
+  path: /spec/template/spec/volumes/-
+  value: 
+    name: gcp-ksa
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          path: token
+          audience: rueth-dev-abm-ref-arch.svc.id.goog
+          expirationSeconds: 172800
+      - configMap:
+          name: frontend-adc
+          optional: false
+          items:
+            - key: "config"
+              path: "google-application-credentials.json"

@@ -27,7 +27,7 @@ profiles:
     - image: accounts-db
       context: .
     tagPolicy:
-      gitCommit: {} # TODO: Change back to sha256: {}
+      sha256: {}
   manifests:
     kustomize:
       paths:
@@ -43,6 +43,11 @@ profiles:
     kustomize:
       paths:
       - k8s/overlays/production
+- name: production-fwi
+  manifests:
+    kustomize:
+      paths:
+      - k8s/overlays/production-fwi
 - name: init-db-staging
   manifests:
     kustomize:
@@ -53,6 +58,11 @@ profiles:
     kustomize:
       paths:
       - k8s/overlays/init-db-production
+- name: init-db-production-fwi
+  manifests:
+    kustomize:
+      paths:
+      - k8s/overlays/init-db-production-fwi
 - name: populate-db-production
   manifests:
     kustomize:
